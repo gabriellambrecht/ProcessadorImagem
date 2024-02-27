@@ -1,18 +1,18 @@
 package org.example.photo_wizard.pdi;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
  * Class responsible for convert a image to gray
- * 
+ *
  * @author JonataBecker
  */
 public class ImageConverterGray {
 
     /**
      * Convert a image to gray
-     * 
+     *
      * @param imagem
      * @return int[][]
      */
@@ -21,17 +21,17 @@ public class ImageConverterGray {
         for (int x = 0; x < imagem.getWidth(); x++) {
             for (int y = 0; y < imagem.getHeight(); y++) {
                 Color color = new Color(imagem.getRGB(x, y), false);
-                map[x][y] = (int)((color.getRed() * 0.2126) + 
-                        (color.getGreen() * 0.7152) + 
-                        (color.getBlue() * 0.0722)) ;
+                map[x][y] = (int) ((color.getRed() * 0.2126) +
+                        (color.getGreen() * 0.7152) +
+                        (color.getBlue() * 0.0722));
             }
         }
         return map;
     }
-    
+
     /**
      * Convert a image data to a BufferdImage
-     * 
+     *
      * @param image
      * @param width
      * @param height
@@ -46,5 +46,5 @@ public class ImageConverterGray {
         }
         return buffer;
     }
- 
+
 }

@@ -1,6 +1,7 @@
 package org.example.photo_wizard.commons;
 
 import org.example.photo_wizard.pdi.ImageConverterGray;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -10,13 +11,21 @@ import java.awt.image.BufferedImage;
  */
 public class Image {
 
-    /** Image width */
+    /**
+     * Image width
+     */
     private final int width;
-    /** Image height */
+    /**
+     * Image height
+     */
     private final int height;
-    /** Gray converter */
+    /**
+     * Gray converter
+     */
     private final ImageConverterGray grayConverter;
-    /** Image data */
+    /**
+     * Image data
+     */
     private final int[][] data;
 
     /**
@@ -30,7 +39,7 @@ public class Image {
         this.grayConverter = new ImageConverterGray();
         this.data = convertImage(imagem);
     }
- 
+
     /**
      * Image information contruction
      *
@@ -41,8 +50,8 @@ public class Image {
         this.height = imagem.getAltura();
         this.grayConverter = new ImageConverterGray();
         this.data = new int[width][height];
-         for (int x = 0; x < width; x++) {
-             System.arraycopy(imagem.data[x], 0, data[x], 0, height);
+        for (int x = 0; x < width; x++) {
+            System.arraycopy(imagem.data[x], 0, data[x], 0, height);
         }
     }
 
@@ -84,58 +93,65 @@ public class Image {
     public int getAltura() {
         return height;
     }
-    
-    public boolean isedge(int x, int y){
-   	// Verifica se os vizinhos pretos estao entre 2 e 6
-	   	int vizinhos = 0;
-	   	//soma cada pixel Preto
-	   	vizinhos=preto(NO(x,y)) + preto(N(x,y)) + preto(NE(x,y))+
-	   			 preto(O(x,y)) +                  preto(L(x,y)) +
-	   			 preto(SO(x,y)) + preto(S(x,y)) + preto(SE(x,y));
-	   	if(vizinhos<2 || vizinhos>6){
-	   		return false;
-	   	}
-       //Calcula conectividade do ponto procurando quantas transições do branco para preto
-       int conectividade = (O(x,y) < SO(x,y) ? 1 : 0)
-       				 + (SO(x,y) < S(x,y) ? 1 : 0)
-       				 + (S(x,y) < SE(x,y) ? 1 : 0)
-       				 + (SE(x,y) < L(x,y) ? 1 : 0)
-       				 + (L(x,y) < NE(x,y) ? 1 : 0)
-       				 + (NE(x,y) < N(x,y) ? 1 : 0)
-       				 + (N(x,y) < NO(x,y) ? 1 : 0)
-       				 + (NO(x,y) < O(x,y) ? 1 : 0);
-       //se conectividade for 1
+
+    public boolean isedge(int x, int y) {
+        // Verifica se os vizinhos pretos estao entre 2 e 6
+        int vizinhos;
+        //soma cada pixel Preto
+        vizinhos = preto(NO(x, y)) + preto(N(x, y)) + preto(NE(x, y)) +
+                preto(O(x, y)) + preto(L(x, y)) +
+                preto(SO(x, y)) + preto(S(x, y)) + preto(SE(x, y));
+        if (vizinhos < 2 || vizinhos > 6) {
+            return false;
+        }
+        //Calcula conectividade do ponto procurando quantas transições do branco para preto
+        int conectividade = (O(x, y) < SO(x, y) ? 1 : 0)
+                + (SO(x, y) < S(x, y) ? 1 : 0)
+                + (S(x, y) < SE(x, y) ? 1 : 0)
+                + (SE(x, y) < L(x, y) ? 1 : 0)
+                + (L(x, y) < NE(x, y) ? 1 : 0)
+                + (NE(x, y) < N(x, y) ? 1 : 0)
+                + (N(x, y) < NO(x, y) ? 1 : 0)
+                + (NO(x, y) < O(x, y) ? 1 : 0);
+        //se conectividade for 1
         return conectividade == 1;
-   }
-   
-   private int preto(int pixel){
-   	return (pixel== 255 ? 1 : 0);
-   }
-    
+    }
+
+    private int preto(int pixel) {
+        return (pixel == 255 ? 1 : 0);
+    }
+
     //funções do ponto cardeal
-    public int NO(int x, int y){
-    	return getPixel(x-1, y-1);
+    public int NO(int x, int y) {
+        return getPixel(x - 1, y - 1);
     }
-    public int N(int x, int y){
-    	return getPixel(x, y-1);
+
+    public int N(int x, int y) {
+        return getPixel(x, y - 1);
     }
-    public int NE(int x, int y){
-    	return getPixel(x+1, y-1);
+
+    public int NE(int x, int y) {
+        return getPixel(x + 1, y - 1);
     }
-    public int O(int x, int y){
-    	return getPixel(x-1, y);
+
+    public int O(int x, int y) {
+        return getPixel(x - 1, y);
     }
-    public int L(int x, int y){
-    	return getPixel(x+1, y);
+
+    public int L(int x, int y) {
+        return getPixel(x + 1, y);
     }
-    public int SO(int x, int y){
-    	return getPixel(x-1, y+1);
+
+    public int SO(int x, int y) {
+        return getPixel(x - 1, y + 1);
     }
-    public int S(int x, int y){
-    	return getPixel(x, y+1);
+
+    public int S(int x, int y) {
+        return getPixel(x, y + 1);
     }
-    public int SE(int x, int y){
-    	return getPixel(x+1, y+1);
+
+    public int SE(int x, int y) {
+        return getPixel(x + 1, y + 1);
     }
 
     /**
@@ -161,5 +177,5 @@ public class Image {
             data[x][y] = pixel;
         }
     }
-    
+
 }

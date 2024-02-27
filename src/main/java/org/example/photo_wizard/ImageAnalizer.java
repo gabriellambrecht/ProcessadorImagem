@@ -1,7 +1,5 @@
 package org.example.photo_wizard;
 
-import org.example.photo_wizard.commons.Image;
-import org.example.photo_wizard.commons.Information;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -22,6 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.example.photo_wizard.commons.Image;
+import org.example.photo_wizard.commons.Information;
 import org.example.photo_wizard.pdi.*;
 
 import javax.imageio.ImageIO;
@@ -42,6 +42,10 @@ public class ImageAnalizer extends Application {
     private TextField textMedian;
     private TextField textMode;
     private TextField textVariance;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage stageA) {
@@ -93,12 +97,12 @@ public class ImageAnalizer extends Application {
             loadImage(fileChooser.showOpenDialog(null));
         });
         file.getItems().addAll(fileOpen);
-        
+
         //Informações
         Menu informacoes = new Menu("Informações");
         MenuItem informacoesA = new MenuItem("Medias");
         informacoesA.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Médias da imagem");
             alert.setHeaderText(null);
             alert.setContentText(new Information(new Image(reader)).getInfoMedia());
@@ -106,7 +110,7 @@ public class ImageAnalizer extends Application {
         });
         MenuItem informacoesB = new MenuItem("Medianas");
         informacoesB.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Medianas da imagem");
             alert.setHeaderText(null);
             alert.setContentText(new Information(new Image(reader)).getInfoMediana());
@@ -114,7 +118,7 @@ public class ImageAnalizer extends Application {
         });
         MenuItem informacoesC = new MenuItem("Modas");
         informacoesC.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Modas da imagem");
             alert.setHeaderText(null);
             alert.setContentText(new Information(new Image(reader)).getInfoModa());
@@ -122,7 +126,7 @@ public class ImageAnalizer extends Application {
         });
         MenuItem informacoesD = new MenuItem("Variâncias");
         informacoesD.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Variâncias da imagem");
             alert.setHeaderText(null);
             alert.setContentText(new Information(new Image(reader)).getInfoVariancia());
@@ -132,7 +136,7 @@ public class ImageAnalizer extends Application {
         informacoesE.setOnAction((ActionEvent event) -> loadHistogramer(new Histograma(new Image(reader)).getHistogramaQuadrante(1)));
         MenuItem informacoesF = new MenuItem("Qtd.pixels < 100 na metade superior");
         informacoesF.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Qtd.pixels < 100 na metade superior");
             alert.setHeaderText(null);
             alert.setContentText("Quantidade: " + new Information(new Image(reader)).qtdPixelMenorSuperior(100));
@@ -140,14 +144,14 @@ public class ImageAnalizer extends Application {
         });
         MenuItem informacoesG = new MenuItem("Qtd.pixels > 150 na metade inferior");
         informacoesG.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Qtd.pixels > 150 na metade inferior");
             alert.setHeaderText(null);
             alert.setContentText("Quantidade: " + new Information(new Image(reader)).qtdPixelMaiorInferior(150));
             alert.showAndWait();
         });
         informacoes.getItems().addAll(informacoesA, informacoesB, informacoesC, informacoesD, informacoesE, informacoesF, informacoesG);
-        
+
         // Statictics
         Menu alteracoes = new Menu("Alterações");
         MenuItem alteracoesA = new MenuItem("Valores maiores ou iguais a média do quadrante 2 recebem branco");
@@ -157,18 +161,18 @@ public class ImageAnalizer extends Application {
         MenuItem alteracoesC = new MenuItem("Valores maiores ou iguais a mediana do quadrante 3 recebem 220");
         alteracoesC.setOnAction((ActionEvent event) -> AlteraImagem(new Alteracoes(new Image(reader)).setValorMaiorMedianaQuadrante(3, 220)));
         MenuItem alteracoesD = new MenuItem("Valores menores que a média do quadrante 2 recebem 100");
-        alteracoesD.setOnAction((ActionEvent event) -> AlteraImagem(new Alteracoes(new Image(reader)).setValorMenorMediaQuadrante(2,100)));
+        alteracoesD.setOnAction((ActionEvent event) -> AlteraImagem(new Alteracoes(new Image(reader)).setValorMenorMediaQuadrante(2, 100)));
         MenuItem alteracoesE = new MenuItem("Valores maiores que a média do quadrante 2 recebem 0 e menores que a mediana do quadrante 3 recebem 255");
         alteracoesE.setOnAction((ActionEvent event) -> {
-            Image imagem = new Alteracoes(new Image(reader)).setValorMaiorMediaQuadrante(2,0);
-            AlteraImagem(new Alteracoes(imagem).setValorMenorMedianaQuadrante(3,255));
+            Image imagem = new Alteracoes(new Image(reader)).setValorMaiorMediaQuadrante(2, 0);
+            AlteraImagem(new Alteracoes(imagem).setValorMenorMedianaQuadrante(3, 255));
         });
         alteracoes.getItems().addAll(alteracoesA, alteracoesB, alteracoesC, alteracoesD, alteracoesE);
         // Transformações
         Menu transformacao = new Menu("Transformações");
         MenuItem transformacaoRotacao = new MenuItem("Rotação");
         transformacaoRotacao.setOnAction((ActionEvent event) -> {
-        	TextInputDialog dialog = new TextInputDialog();
+            TextInputDialog dialog = new TextInputDialog();
             dialog.setContentText("Ângulo:");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(angulo -> AlteraImagem(new Transformacoes(new Image(reader)).rotacaoAngulo(Integer.parseInt(angulo))));
@@ -177,14 +181,14 @@ public class ImageAnalizer extends Application {
         transformacaoRotacao2.setOnAction((ActionEvent event) -> executaRotacao());
         MenuItem transformacaoAmpliacao = new MenuItem("Ampliação");
         transformacaoAmpliacao.setOnAction((ActionEvent event) -> {
-        	TextInputDialog dialog = new TextInputDialog("2");
+            TextInputDialog dialog = new TextInputDialog("2");
             dialog.setContentText("Fator:");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(fator -> AlteraImagem(new Transformacoes(new Image(reader)).amplia(Double.parseDouble(fator))));
         });
         MenuItem transformacaoReducao = new MenuItem("Redução");
         transformacaoReducao.setOnAction((ActionEvent event) -> {
-        	TextInputDialog dialog = new TextInputDialog("2");
+            TextInputDialog dialog = new TextInputDialog("2");
             dialog.setContentText("Fator:");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(fator -> AlteraImagem(new Transformacoes(new Image(reader)).reduz(Double.parseDouble(fator))));
@@ -216,7 +220,7 @@ public class ImageAnalizer extends Application {
         MenuItem canny = new MenuItem("Canny");
         canny.setOnAction((ActionEvent event) -> executeDeteccaoCanny());
         filtroDeteccaoBordas.getItems().addAll(prewitt, laplaciano, canny);
-        // Morfologia 
+        // Morfologia
         Menu morfologia = new Menu("Morfologia");
         MenuItem morfologiaDilatacao = new MenuItem("Dilatação");
         morfologiaDilatacao.setOnAction((ActionEvent event) -> AlteraImagem(new Morfologia(new Image(modificada)).dilatacao()));
@@ -228,12 +232,12 @@ public class ImageAnalizer extends Application {
         morfologiaAbertura.setOnAction((ActionEvent event) -> AlteraImagem(new Morfologia(new Morfologia(new Image(reader)).erosao()).dilatacao()));
         MenuItem morfologiaFechamento = new MenuItem("Fechamento");
         morfologiaFechamento.setOnAction((ActionEvent event) -> AlteraImagem(new Morfologia(new Morfologia(new Image(reader)).dilatacao()).erosao()));
-        morfologia.getItems().addAll(morfologiaDilatacao, morfologiaErosao, morfologiaAfinamento, morfologiaAbertura, morfologiaFechamento );
+        morfologia.getItems().addAll(morfologiaDilatacao, morfologiaErosao, morfologiaAfinamento, morfologiaAbertura, morfologiaFechamento);
         // Extração de caracteristica
         Menu extracao = new Menu("Extração caracteristica");
         MenuItem extracaoQuadrado = new MenuItem("1 Quadrado");
         extracaoQuadrado.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Informações");
             alert.setHeaderText(null);
             alert.setContentText(new Extrator(new Image(reader)).extraiQuadrado());
@@ -241,7 +245,7 @@ public class ImageAnalizer extends Application {
         });
         MenuItem extracaoMenorCirculo = new MenuItem("Maior círculo");
         extracaoMenorCirculo.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Informações");
             alert.setHeaderText(null);
             alert.setContentText(new Extrator(new Image(reader)).extraiMaiorCirculo());
@@ -249,7 +253,7 @@ public class ImageAnalizer extends Application {
         });
         MenuItem extracaoTodosCirculo = new MenuItem("Todos círculos");
         extracaoTodosCirculo.setOnAction((ActionEvent event) -> {
-        	Alert alert = new Alert(AlertType.INFORMATION);
+            Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Informações");
             alert.setHeaderText(null);
             alert.setContentText(new Extrator(new Image(reader)).extraiCirculos());
@@ -257,7 +261,7 @@ public class ImageAnalizer extends Application {
         });
         extracao.getItems().addAll(extracaoQuadrado, extracaoMenorCirculo, extracaoTodosCirculo);
         // Add menu itens
-        menuBar.getMenus().addAll(file,informacoes, alteracoes, transformacao, filtro, filtroDeteccaoBordas, morfologia, extracao);
+        menuBar.getMenus().addAll(file, informacoes, alteracoes, transformacao, filtro, filtroDeteccaoBordas, morfologia, extracao);
         pane.setTop(menuBar);
     }
 
@@ -265,7 +269,7 @@ public class ImageAnalizer extends Application {
      * Executa o processo de Threshold
      */
     private void executaThreshold() {
-        ControleDeslizante th = new ControleDeslizante(0,255);
+        ControleDeslizante th = new ControleDeslizante(0, 255);
         th.addObserver((threshold) -> AlteraImagem(new Alteracoes(new Image(reader)).threshold(threshold)));
         th.setValue(150);
         Dialog<Double[]> dialog = new Dialog<>();
@@ -274,19 +278,20 @@ public class ImageAnalizer extends Application {
         dialog.getDialogPane().setContent(th);
         dialog.show();
     }
-    private void executeDeteccaoPrewitt(){
-    	 ControleDeslizante th = new ControleDeslizante(0,255);
-         th.addObserver((threshold) -> AlteraImagem(new Filtros(new Image(reader)).deteccaoPrewitt(threshold)));
-         th.setValue(150);
-         Dialog<Double[]> dialog = new Dialog<>();
-         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-         dialog.setTitle("Thresholding");
-         dialog.getDialogPane().setContent(th);
-         dialog.show();
+
+    private void executeDeteccaoPrewitt() {
+        ControleDeslizante th = new ControleDeslizante(0, 255);
+        th.addObserver((threshold) -> AlteraImagem(new Filtros(new Image(reader)).deteccaoPrewitt(threshold)));
+        th.setValue(150);
+        Dialog<Double[]> dialog = new Dialog<>();
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.setTitle("Thresholding");
+        dialog.getDialogPane().setContent(th);
+        dialog.show();
     }
-    
-    private void executeDeteccaoCanny(){
-   	 ControleDeslizante th = new ControleDeslizante(0,255);
+
+    private void executeDeteccaoCanny() {
+        ControleDeslizante th = new ControleDeslizante(0, 255);
         th.addObserver((threshold) -> AlteraImagem(new Filtros(new Image(reader)).deteccaoCanny(threshold)));
         th.setValue(150);
         Dialog<Double[]> dialog = new Dialog<>();
@@ -294,10 +299,10 @@ public class ImageAnalizer extends Application {
         dialog.setTitle("Thresholding");
         dialog.getDialogPane().setContent(th);
         dialog.show();
-   }
-    
-    private void executeDeteccaoLaplaciano(){
-   	 ControleDeslizante th = new ControleDeslizante(0,255);
+    }
+
+    private void executeDeteccaoLaplaciano() {
+        ControleDeslizante th = new ControleDeslizante(0, 255);
         th.addObserver((threshold) -> AlteraImagem(new Filtros(new Image(reader)).deteccaoLaplaciano(threshold)));
         th.setValue(150);
         Dialog<Double[]> dialog = new Dialog<>();
@@ -305,13 +310,13 @@ public class ImageAnalizer extends Application {
         dialog.setTitle("Thresholding");
         dialog.getDialogPane().setContent(th);
         dialog.show();
-   }
-    
+    }
+
     /**
      * Executa o processo de rotação
      */
     private void executaRotacao() {
-        ControleDeslizante th = new ControleDeslizante(0,360);
+        ControleDeslizante th = new ControleDeslizante(0, 360);
         th.addObserver((angulo) -> AlteraImagem(new Transformacoes(new Image(reader)).rotacaoAngulo(angulo)));
         th.setValue(0);
         Dialog<Double[]> dialog = new Dialog<>();
@@ -497,7 +502,7 @@ public class ImageAnalizer extends Application {
      * Method responsible for creating titles
      *
      * @param title The title
-     * @param size Font Size
+     * @param size  Font Size
      * @return Label
      */
     private Label createTitle(String title, int size) {
@@ -507,14 +512,10 @@ public class ImageAnalizer extends Application {
         label.setPadding(new Insets(0, 0, 5, 0));
         return label;
     }
-    
-    private void AlteraImagem(Image imagem){
-    	modificada = imagem.getBufferdImage();
-    	modify.setImage(SwingFXUtils.toFXImage(modificada, null));
-    }
 
-    public static void main(String[] args) {
-        launch(args);
+    private void AlteraImagem(Image imagem) {
+        modificada = imagem.getBufferdImage();
+        modify.setImage(SwingFXUtils.toFXImage(modificada, null));
     }
 
 }
